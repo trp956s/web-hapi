@@ -4,7 +4,7 @@
   "description": "example hapi.js REST server for addresses",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine-node --verbose ."
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "frisby": "^2.0.2",
-    "jasmine": "^2.7.0"
+    "jasmine": "^2.7.0",
+    "jasmine-node": "^1.14.5"
   }
 }
