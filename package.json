@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/trp956s/web-hapi#readme",
   "dependencies": {
+    "hapi": "^16.5.2",
     "hapi-swagger": "^7.7.0"
   },
   "devDependencies": {
