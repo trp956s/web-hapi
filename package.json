@@ -4,7 +4,7 @@
   "description": "example hapi.js REST server for addresses",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine-node --verbose ."
+    "test": "jasmine-node --verbose . && jasmine"
   },
   "repository": {
     "type": "git",
