@@ -4,7 +4,8 @@
   "description": "example hapi.js REST server for addresses",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 2000);' && jasmine-node --verbose . && jasmine\" --kill-others --success all",
+    "start": "node api/server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/trp956s/web-hapi/issues"
   },
-  "homepage": "https://github.com/trp956s/web-hapi#readme"
+  "homepage": "https://github.com/trp956s/web-hapi#readme",
+  "dependencies": {
+    "hapi": "^16.5.2",
+    "hapi-swagger": "^7.7.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "frisby": "^2.0.2",
+    "jasmine": "^2.7.0",
+    "jasmine-node": "^1.14.5"
+  }
 }
