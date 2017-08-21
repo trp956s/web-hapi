@@ -6,7 +6,7 @@
   "scripts": {
     "test": "concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 2000);' && jasmine-node --verbose . && jasmine\" --kill-others --success all",
     "start": "node api/server.js",
-    "boot-up-database": "concurrently \"mkdir -p data && mongod --dbpath=./data --port 27017\" \"node -e 'setTimeout(()=>console.log(\\\"database running on mongodb://localhost:27017\\\"), 2000)'\""
+    "boot-up-database": "concurrently \"mkdir -p data && mongod --dbpath=./data --port 27017\" \"node -e 'setTimeout(()=>console.log(\\\"database running on mongodb://localhost:27017\\\"), 2000)'\" --success all"
   },
   "repository": {
     "type": "git",
