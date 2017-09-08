@@ -7,7 +7,9 @@
     "dev-station-setup": "brew install mongodb",
     "test": "concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 5000);' && jasmine-node --verbose . && jasmine\" --kill-others --success all",
     "start": "concurrently \"npm run boot-up-database\" \"node -e 'setTimeout(function() {}, 2500);' && node api/server.js\" --kill-others --success all",
-    "boot-up-database": "concurrently \"mkdir -p data && mongod --dbpath=./data --port 27017\" \"node -e 'setTimeout(()=>console.log(\\\"database running on mongodb://localhost:27017\\\"), 2000)'\" --success all",
+    ".shut-down-database": "mongo --eval 'db.getSiblingDB(\"admin\").shutdownServer()'",
+    "shut-down-database": "npm run --silent .shut-down-database || true",
+    "boot-up-database": "npm run shut-down-database; rm -rf ./db || true; [ -d ./db ] || mkdir -p -m 777 ./db; [ -d ./db/data ] || mkdir -m 777 ./db/data; mongod --config ./mongod.conf",
     "unit-tests": "jasmine jasmineConfig.json"
   },
   "repository": {
