@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev-station-setup": "brew install mongodb",
-    "test": "concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 5000);' && jasmine-node --verbose . && jasmine\" --kill-others --success all",
+    "test": "npm run unit-tests && concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 9000);' && npm run e2e-tests\" --kill-others --success first",
     "start": "npm run db-up && node api/server",
     "db-down": "node ./package-scripts/shutdown-db",
     "db-up": "node ./package-scripts/bootup-db",
-    "unit-tests": "jasmine jasmineConfig.json"
+    "unit-tests": "jasmine JASMINE_CONFIG_PATH=./spec/jasmineConfig.json",
+    "e2e-tests": "jasmine-node --verbose ."
   },
   "repository": {
     "type": "git",
