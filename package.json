@@ -6,7 +6,7 @@
   "scripts": {
     "dev-station-setup": "brew install mongodb",
     "test": "concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 5000);' && jasmine-node --verbose . && jasmine\" --kill-others --success all",
-    "start": "npm run db-up && node api/server.js",
+    "start": "npm run db-up && node api/server",
     "db-down": "node ./package-scripts/shutdown-db",
     "db-up": "node ./package-scripts/bootup-db",
     "unit-tests": "jasmine jasmineConfig.json"
