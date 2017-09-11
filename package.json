@@ -4,9 +4,13 @@
   "description": "example hapi.js REST server for addresses",
   "main": "index.js",
   "scripts": {
-    "test": "concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 5000);' && jasmine-node --verbose . && jasmine\" --kill-others --success all",
-    "start": "concurrently \"npm run boot-up-database\" \"node -e 'setTimeout(function() {}, 2500);' && node api/server.js\" --kill-others --success all",
-    "boot-up-database": "concurrently \"mkdir -p data && mongod --dbpath=./data --port 27017\" \"node -e 'setTimeout(()=>console.log(\\\"database running on mongodb://localhost:27017\\\"), 2000)'\" --success all"
+    "dev-station-setup": "brew install mongodb",
+    "test": "npm run unit-tests && concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 9000);' && npm run e2e-tests\" --kill-others --success first",
+    "start": "npm run db-up && node api/server",
+    "db-down": "node ./package-scripts/shutdown-db",
+    "db-up": "node ./package-scripts/bootup-db",
+    "unit-tests": "jasmine JASMINE_CONFIG_PATH=./spec/jasmineConfig.json",
+    "e2e-tests": "jasmine-node --verbose ."
   },
   "repository": {
     "type": "git",
@@ -27,6 +31,7 @@
     "frisby": "^2.0.2",
     "jasmine": "^2.7.0",
     "jasmine-node": "^1.14.5",
-    "mongodb": "^2.2.31"
+    "mongodb": "^2.2.31",
+    "shelljs": "^0.7.8"
   }
 }
