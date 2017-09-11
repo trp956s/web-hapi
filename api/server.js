@@ -19,7 +19,10 @@ server.route({
 server.register({
     register: require('ot-hapi-health'),
     options: {
-    	isHealthy: cb => cb(true) // optional async validator to establish app readiness 
+    	isHealthy: cb => {
+        //TODO: add database check here
+        cb(true)
+      }
     }
 }, function(err) {
     if (err) {
