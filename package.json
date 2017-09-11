@@ -7,6 +7,7 @@
     "dev-station-setup": "brew install mongodb",
     "test": "npm run unit-tests && concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 9000);' && npm run e2e-tests\" --kill-others --success first",
     "start": "npm run db-up && node api/server",
+    "healthy": "wait-on http://localhost:8000/health -l -t 20000",
     "db-down": "node ./package-scripts/shutdown-db",
     "db-up": "node ./package-scripts/bootup-db",
     "unit-tests": "jasmine JASMINE_CONFIG_PATH=./spec/jasmineConfig.json",
@@ -33,6 +34,7 @@
     "jasmine": "^2.7.0",
     "jasmine-node": "^1.14.5",
     "mongodb": "^2.2.31",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.7.8",
+    "wait-on": "^2.0.2"
   }
 }
