@@ -16,10 +16,21 @@ server.route({
   }
 });
 
-server.start((err)=>{
-  if(err){
-    throw err;
-  }
+server.register({
+    register: require('ot-hapi-health'),
+    options: {
+    	isHealthy: cb => cb(true) // optional async validator to establish app readiness 
+    }
+}, function(err) {
+    if (err) {
+        console.error('Failed to load plugin:', err);
+    }
 
-  console.log('Server running at', server.info.uri);
+  server.start((err)=>{
+    if(err){
+      throw err;
+    }
+
+    console.log('Server running at', server.info.uri);
+  });
 });
