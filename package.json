@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-station-setup": "brew install mongodb",
-    "test": "npm run unit-tests && concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 9000);' && npm run e2e-tests\" --kill-others --success first",
+    "test": "npm run unit-tests && concurrently \"npm start\" \"npm run healthy && npm run e2e-tests\" --kill-others --success first",
     "start": "npm run db-up && node api/server",
     "healthy": "wait-on http://localhost:8000/health -l -t 20000",
     "db-down": "node ./package-scripts/shutdown-db",
