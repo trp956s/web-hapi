@@ -1,6 +1,8 @@
 'use strict';
 
 const Hapi = require('hapi');
+const {Db, Server} = require('mongodb');
+const assert = require('assert');
 
 const server = new Hapi.Server();
 server.connection({
@@ -20,8 +22,14 @@ server.register({
     register: require('ot-hapi-health'),
     options: {
     	isHealthy: cb => {
-        //TODO: add database check here
-        cb(true)
+        const db = new Db('addresses', new Server('localhost', 27017));
+        db.open(err => {
+          assert.equal(null, err);
+          console.log("Connected correctly to server");
+        
+          db.close();
+          cb(true);
+        });
       }
     }
 }, function(err) {
