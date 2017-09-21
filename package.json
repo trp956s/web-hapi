@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev-station-setup": "brew install mongodb",
-    "test": "npm run unit-tests && concurrently \"npm start\" \"node -e 'setTimeout(function() {}, 9000);' && npm run e2e-tests\" --kill-others --success first",
+    "test": "npm run unit-tests && concurrently \"npm start\" \"npm run healthy && npm run e2e-tests\" --kill-others --success first",
     "start": "npm run db-up && node api/server",
+    "healthy": "wait-on http://localhost:8000/health -l -t 20000",
     "db-down": "node ./package-scripts/shutdown-db",
     "db-up": "node ./package-scripts/bootup-db",
     "unit-tests": "jasmine JASMINE_CONFIG_PATH=./spec/jasmineConfig.json",
@@ -24,7 +25,8 @@
   "homepage": "https://github.com/trp956s/web-hapi#readme",
   "dependencies": {
     "hapi": "^16.5.2",
-    "hapi-swagger": "^7.7.0"
+    "hapi-swagger": "^7.7.0",
+    "ot-hapi-health": "^1.0.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
@@ -32,6 +34,7 @@
     "jasmine": "^2.7.0",
     "jasmine-node": "^1.14.5",
     "mongodb": "^2.2.31",
-    "shelljs": "^0.7.8"
+    "shelljs": "^0.7.8",
+    "wait-on": "^2.0.2"
   }
 }
