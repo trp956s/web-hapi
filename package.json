@@ -25,6 +25,7 @@
   "homepage": "https://github.com/trp956s/web-hapi#readme",
   "dependencies": {
     "hapi": "^16.5.2",
+    "hapi-route-hierarchy": "^1.0.0",
     "hapi-swagger": "^7.7.0",
     "ot-hapi-health": "^1.0.1"
   },

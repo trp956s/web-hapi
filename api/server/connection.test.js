@@ -1,4 +1,4 @@
-const testObject = require('./connection.js');
+const testObject = require('./connection');
 const Hapi = require('hapi');
 const Os = require('os');
 

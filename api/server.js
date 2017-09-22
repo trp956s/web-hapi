@@ -8,14 +8,6 @@ const connection = require('./server/connection');
 const server = new Hapi.Server();
 connection(server);
 
-server.route({
-  method: 'GET',
-  path: '/address/city',
-  handler: function(request, reply){
-    return reply()
-  }
-});
-
 server.register({
     register: require('ot-hapi-health'),
     options: {
@@ -35,11 +27,24 @@ server.register({
         console.error('Failed to load plugin:', err);
     }
 
-  server.start((err)=>{
-    if(err){
-      throw err;
-    }
+    server.register(
+    {
+        register: require( 'hapi-route-hierarchy' ),
+        options: {
+            root: __dirname + '/routes',
+            glob_pattern: '**/!(*.test.js)'
+        }
+    }, ( err ) => {
+      if (err) {
+          console.error('Failed to load plugin:', err);
+      }
 
-    console.log('Server running at', server.info.uri);
-  });
+      server.start((err)=>{
+        if(err){
+          throw err;
+        }
+
+        console.log('Server running at', server.info.uri);
+      });      
+    });
 });
