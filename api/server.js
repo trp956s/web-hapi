@@ -3,12 +3,10 @@
 const Hapi = require('hapi');
 const {Db, Server} = require('mongodb');
 const assert = require('assert');
+const connection = require('./server/connection');
 
 const server = new Hapi.Server();
-server.connection({
-  host: 'localhost',
-  port: 8000
-});
+connection(server);
 
 server.route({
   method: 'GET',
