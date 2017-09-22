@@ -8,7 +8,8 @@ const connection = require('./server/connection');
 const server = new Hapi.Server();
 connection(server);
 
-server.register({
+server.register([
+  {
     register: require('ot-hapi-health'),
     options: {
     	isHealthy: cb => {
@@ -22,29 +23,22 @@ server.register({
         });
       }
     }
-}, function(err) {
+  }, {
+    register: require( 'hapi-route-hierarchy' ),
+    options: {
+        root: __dirname + '/routes',
+        glob_pattern: '**/!(*.test.js)'
+    }
+  }],function(err) {
     if (err) {
         console.error('Failed to load plugin:', err);
     }
 
-    server.register(
-    {
-        register: require( 'hapi-route-hierarchy' ),
-        options: {
-            root: __dirname + '/routes',
-            glob_pattern: '**/!(*.test.js)'
-        }
-    }, ( err ) => {
-      if (err) {
-          console.error('Failed to load plugin:', err);
+    server.start((err)=>{
+      if(err){
+        throw err;
       }
 
-      server.start((err)=>{
-        if(err){
-          throw err;
-        }
-
-        console.log('Server running at', server.info.uri);
-      });      
-    });
+      console.log('Server running at', server.info.uri);
+    });      
 });
