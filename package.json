@@ -39,6 +39,7 @@
     "jest": "^21.1.0",
     "mongodb": "^2.2.31",
     "shelljs": "^0.7.8",
+    "wait-for-stuff": "^1.3.0",
     "wait-on": "^2.0.2"
   }
 }
