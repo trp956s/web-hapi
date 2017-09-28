@@ -15,7 +15,7 @@ describe('server', ()=>{
 
         require('hapi').Server = serverConstructorMock;
         jest.doMock('./server/connection', ()=>{return jest.fn(() => 'foo');});
-        jest.doMock('./server/pluginList', ()=>Promise.resolve('bar'));
+        jest.doMock('./server/pluginList', ()=>{return jest.fn(() => Promise.resolve('bar'));});
         jest.doMock('./server/onLoaded', ()=>onLoadedMock);
 
         require('./server');
