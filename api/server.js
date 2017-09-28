@@ -2,16 +2,12 @@
 
 const Hapi = require('hapi');
 const connection = require('./server/connection');
-const glob = require( "glob-promise" );
 const onLoaded = require('./server/onLoaded');
+const pluginList = require('./server/pluginList');
 
 const server = new Hapi.Server();
+server.connection(connection());
 (async () => {
-  connection(server);
-  let localPath = require('path').basename(__dirname);
-
-  const registerJavaFiles = await glob(`${localPath}/server/register/*.js`);
-  const registerArray = registerJavaFiles.map(file=>require(`../${file}`)());
-
+  const registerArray = await pluginList();
   server.register(registerArray, onLoaded(server));      
 })(); 

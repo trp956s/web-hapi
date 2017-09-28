@@ -5,7 +5,7 @@ const Os = require('os');
 describe('set connection', ()=>{
    it('should connect to localhost at port 3000', ()=>{
        const server = new Hapi.Server();
-       testObject(server);
+       server.connection(testObject());
 
        expect(server.connections.length).toBe(1);
        expect(server.connections[0].settings.host).toBe('localhost');
@@ -20,7 +20,7 @@ describe('set connection', ()=>{
 
        const server = new Hapi.Server();
 
-       testObject(server);
+       server.connection(testObject());
 
        expect(server).toMatchSnapshot();
    });

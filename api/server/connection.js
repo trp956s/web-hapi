@@ -1,4 +1,6 @@
-module.exports = server => server.connection({
-  host: 'localhost',
-  port: 8000
-});
+module.exports = () => {
+  return {
+    host: 'localhost',
+    port: 8000
+  };
+}
