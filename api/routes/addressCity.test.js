@@ -1,6 +1,5 @@
 const testObject = require('./addressCity');
 const Hapi = require('hapi');
-const Os = require('os');
 
 describe('address city', ()=>{
     it('returns a get endpoint', () => {

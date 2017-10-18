@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/trp956s/web-hapi#readme",
   "dependencies": {
+    "co": "^4.6.0",
     "glob-promise": "^3.2.0",
     "hapi": "^16.5.2",
     "hapi-route-hierarchy": "^1.0.0",

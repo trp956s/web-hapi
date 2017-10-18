@@ -1,7 +1,7 @@
 const Hapi = require('hapi');
 
 describe('server', ()=>{
-    it('should set the connection', ()=>{
+    it('should set the connection', async ()=>{
         const connectionMock = jest.fn();
         const registerMock = jest.fn();
         const onLoadedMock = jest.fn(() => 'baz');
@@ -18,7 +18,7 @@ describe('server', ()=>{
         jest.doMock('./server/pluginList', ()=>{return jest.fn(() => Promise.resolve('bar'));});
         jest.doMock('./server/onLoaded', ()=>onLoadedMock);
 
-        require('./server');
+        await require('./server');
 
         expect(connectionMock).toHaveBeenCalledWith('foo');
         expect(registerMock).toHaveBeenCalledWith('bar', 'baz');
