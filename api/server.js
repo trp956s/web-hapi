@@ -16,7 +16,8 @@ return new Promise(resolve =>{
             server.register(plugins, resolve);
         });
         if (err) {
-            console.error('Failed to load plugins:', err);
+            console.error('Failed to load plugins:');
+            throw err;
         }
     });
 

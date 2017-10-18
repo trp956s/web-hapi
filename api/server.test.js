@@ -45,7 +45,27 @@ describe('server', ()=>{
     });
 
     it('should throw an error if the plugins fail to load', ()=>{
-        expect(true).toBeFalsy('test not written');
+        const pluginFailure = {oh:'noes'};
+        const actualError;
+        delete require.cache[require.resolve('hapi')];
+        const Hapi = require('hapi');
+
+        Hapi.Server = function(){
+            return {
+                connection: jest.fn(),
+                register: jasmine.createSpy('register').and.returnValue(pluginFailure),
+            };
+        };
+
+        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve([]));
+
+        try {
+            await require('./server');
+        } catch(e){
+            actualError = e;
+        }
+
+        expect(actualError).toEqual(pluginFailure);
     });
 
     it('should run the server AFTER loading all plugins', async ()=>{
