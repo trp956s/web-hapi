@@ -5,14 +5,14 @@ module.exports = () => {
     return {
       register: require('ot-hapi-health'),
       options: {
-        isHealthy: cb => {
+        isHealthy: callback => {
           const db = new Db('addresses', new Server('localhost', 27017));
           db.open(err => {
             assert.equal(null, err);
             console.log("Connected correctly to server");
           
             db.close();
-            cb(true);
+            callback(true);
           });
         }
       }
