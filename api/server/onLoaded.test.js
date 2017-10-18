@@ -5,7 +5,7 @@ describe('onLoaded', ()=>{
         const startSpy = jasmine.createSpy('start');
         const serverFake = {start: startSpy};
 
-        onLoaded(serverFake)();
+        onLoaded(serverFake);
 
         expect(startSpy.calls.count()).toEqual(1);
         let callback = startSpy.calls.first().args[0];
@@ -16,7 +16,7 @@ describe('onLoaded', ()=>{
         let actualError;
         let fakeError = {};
         const serverFake = {start: jasmine.createSpy('start')};
-        onLoaded(serverFake)();
+        onLoaded(serverFake);
         const callback = serverFake.start.calls.first().args[0];
         try{
             callback(fakeError);
