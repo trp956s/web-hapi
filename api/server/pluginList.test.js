@@ -8,7 +8,7 @@ describe('pluginList', ()=> {
 
        const result = await pluginList();
     
-       const files = fs.readdirSync(`${localPath}/regisTer`);
+       const files = fs.readdirSync(`${localPath}/register`);
        const registerFiles = files.filter(fileName => !fileName.endsWith('.test.js'));
 
        expect(result.length).toBe(registerFiles.length);

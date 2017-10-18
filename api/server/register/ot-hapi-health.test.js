@@ -24,6 +24,6 @@ describe('register hapi-health', ()=>{
         const registration = registerHapiHealth();
         const isHealthy = registration.options.isHealthy;
 
-        
+        //todo        
     });
 });
