@@ -9,12 +9,17 @@ const co = require('co');
 const server = new Hapi.Server();
 server.connection(connection());
 
-co(function*(){
-    let plugins = yield pluginList();
-    let err = yield new Promise(resolve => server.register(plugins, resolve));
-    if (err) {
-        console.error('Failed to load plugins:', err);
-    }
-});
+return new Promise(resolve =>{
+    co(function*(){
+        let plugins = yield pluginList();
+        let err = yield new Promise(resolve => {
+            server.register(plugins, resolve);
+        });
+        if (err) {
+            console.error('Failed to load plugins:', err);
+        }
+    });
 
-onLoaded(server);
+    onLoaded(server);
+    resolve();
+});

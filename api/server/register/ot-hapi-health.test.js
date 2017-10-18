@@ -27,7 +27,7 @@ describe('register hapi-health', ()=>{
         const isHealthy = registration.options.isHealthy;
         let actualError;
 
-        dbFake.and.throwError('');
+        dbFake.and.throwError('bad');
 
         try {
             isHealthy();

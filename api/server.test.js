@@ -1,43 +1,50 @@
-const Hapi = require('hapi');
-
 describe('server', ()=>{
-    it('should set the connection', async ()=>{
-        const connectionMock = jest.fn();
-        const fakeServer= {
-            connection:connectionMock,
-        };
-        const serverConstructorMock = jest.fn(()=>{
-            return fakeServer;
-        });
+    beforeEach(()=>{
+        delete require.cache[require.resolve('./server')];
+    });
 
-        require('hapi').Server = serverConstructorMock;
-        jest.doMock('co', ()=>()=>{});
-        jest.doMock('./server/connection', ()=>()=>'foo');
+    // it('should set the connection', async ()=>{
+    //     const connectionMock = jest.fn();
+    //     const fakeServer= {
+    //         connection:connectionMock,
+    //     };
+    //     const serverConstructorMock = jest.fn(()=>{
+    //         return fakeServer;
+    //     });
+
+    //     require('hapi').Server = serverConstructorMock;
+    //     jest.doMock('co', ()=>()=>{});
+    //     jest.doMock('./server/connection', ()=>()=>'foo');
+    //     jest.doMock('./server/onLoaded', ()=>()=>{});
+
+    //     require('./server');
+
+    //     expect(connectionMock).toHaveBeenCalledWith('foo');
+    // });
+
+    it('should send the plugins to get registered', async ()=>{
+        const registerSpy = jasmine.createSpy('register');
+        const fakePluginList = [{foo:'bar'}];
+
+        delete require.cache[require.resolve('hapi')];
+        const Hapi = require('hapi');
+
+        Hapi.Server = function(){
+            return {
+                connection:jest.fn(),
+                register: registerSpy,
+            };
+        };
+
+        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve(fakePluginList));
         jest.doMock('./server/onLoaded', ()=>()=>{});
 
         await require('./server');
 
-        expect(connectionMock).toHaveBeenCalledWith('foo');
+        expect(registerSpy).toHaveBeenCalledWith(fakePluginList, jasmine.any(Function));
     });
 
-    it('should send the plugins to get registered', async ()=>{
-        const registerSpy = jest.fn();
-        const fakePluginList = [];
-        const fakeServer= {
-            connection:()=>{},
-            register: registerSpy
-        };
-        require('hapi').Server = jest.fn(()=>{
-            return fakeServer;
-        });
-        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve(fakePluginList));
-
-        await require('./server');
-
-        expect(registerSpy).toHaveBeenCalledWith(fakePluginList);
-    });
-
-    it('should throw an error if the plugins fail to load', async ()=>{
+    it('should throw an error if the plugins fail to load', ()=>{
         expect(true).toBeFalsy('test not written');
     });
 
