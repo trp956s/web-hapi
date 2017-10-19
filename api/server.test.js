@@ -66,7 +66,6 @@ describe('server', ()=>{
 
     it('should run the server AFTER loading all plugins', async ()=>{
         jest.resetModules();
-        delete require.cache[require.resolve('hapi')];
         const startTheServerSpy = jasmine.createSpy('startTheServer');
         const fakeServer = {
                 connection : jest.fn(),
@@ -86,7 +85,5 @@ describe('server', ()=>{
 
         expect(fakeServer.register).toHaveBeenCalled();
         expect(startTheServerSpy).toHaveBeenCalledWith(fakeServer);
-
-        //expect(false).toBeTruthy('this is not done: remove cargo cult code and rename onLoaded');
     });
 });
