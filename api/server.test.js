@@ -91,6 +91,6 @@ describe('server', ()=>{
         expect(fakeServer.register).toHaveBeenCalled();
         expect(startTheServerSpy).toHaveBeenCalledWith(fakeServer);
 
-        // expect(false).toBeTruthy('this is not done: remove cargo cult code and rename onLoaded');
+        expect(false).toBeTruthy('this is not done: remove cargo cult code and rename onLoaded');
     });
 });
