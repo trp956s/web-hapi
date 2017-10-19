@@ -43,7 +43,7 @@ describe('server', ()=>{
     });
 
     it('should throw an error if the plugins fail to load', async ()=>{
-        jest.resetModules()
+        jest.resetModules();
         const pluginFailure = {oh:'noes'};
         let actualError;
 
@@ -68,27 +68,29 @@ describe('server', ()=>{
         expect(actualError).toEqual(pluginFailure);
     });
 
-    // it('should run the server AFTER loading all plugins', async ()=>{
-    //     delete require.cache[require.resolve('hapi')];
-    //     const Hapi = require('hapi');
-    //     const startTheServerSpy = jasmine.createSpy('startTheServer');
-    //     const fakeServer = {
-    //         connection: jest.fn(),
-    //         register: jasmine.createSpy('register').and.callFake(()=>{
-    //             expect(startTheServerSpy).not.toHaveBeenCalledWith(fakeServer);
-    //         }),
-    //     };
+    it('should run the server AFTER loading all plugins', async ()=>{
+        jest.resetModules();
+        delete require.cache[require.resolve('hapi')];
+        const startTheServerSpy = jasmine.createSpy('startTheServer');
+        const fakeServer = {
+                connection : jest.fn(),
+                register: jasmine.createSpy('register').and.callFake((ignore, callback)=>{
+                    expect(startTheServerSpy).not.toHaveBeenCalledWith(fakeServer);
+                    callback();
+                })
+            };
 
-    //     Hapi.Server = function(){
-    //         return fakeServer;
-    //     };
+        jest.doMock('./hapiServer', ()=>()=>fakeServer);
 
-    //     jest.doMock('./server/pluginList', ()=>()=>Promise.resolve([]));
-    //     jest.doMock('./server/onLoaded', ()=>startTheServerSpy);
 
-    //     // await require('./server');
+        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve([]));
+        jest.doMock('./server/onLoaded', ()=>startTheServerSpy);
 
-    //     // expect(fakeServer.register).toHaveBeenCalled();
-    //     // expect(startTheServerSpy).toHaveBeenCalledWith(fakeServer);
-    // });
+        await require('./server');
+
+        expect(fakeServer.register).toHaveBeenCalled();
+        expect(startTheServerSpy).toHaveBeenCalledWith(fakeServer);
+
+        // expect(false).toBeTruthy('this is not done: remove cargo cult code and rename onLoaded');
+    });
 });
