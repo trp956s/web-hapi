@@ -6,7 +6,7 @@ const startTheServer = require('./server/onLoaded');
 const pluginList = require('./server/pluginList');
 const co = require('co');
 
-const server = HapiServer();
+const server = HapiServer;
 server.connection(connection());
 
 module.exports = new Promise((resolve, reject) => {
