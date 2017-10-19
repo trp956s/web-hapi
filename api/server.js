@@ -1,26 +1,29 @@
 'use strict';
 
-const Hapi = require('hapi');
+const HapiServer = require('./hapiServer');
 const connection = require('./server/connection');
-const onLoaded = require('./server/onLoaded');
+const startTheServer = require('./server/onLoaded');
 const pluginList = require('./server/pluginList');
 const co = require('co');
 
-const server = new Hapi.Server();
+const server = HapiServer();
 server.connection(connection());
 
-return new Promise(resolve =>{
+console.log('>>>>>>>>', module.exports);
+
+module.exports = new Promise((resolve, reject) => {
     co(function*(){
         let plugins = yield pluginList();
-        let err = yield new Promise(resolve => {
-            server.register(plugins, resolve);
-        });
-        if (err) {
-            console.error('Failed to load plugins:');
-            throw err;
-        }
-    });
+        let err = yield new Promise(resolve => 
 
-    onLoaded(server);
-    resolve();
+            server.register(plugins, resolve)
+        );
+        if (err) {
+            console.log('Failed to load plugins:', err);
+            reject(err);
+        }
+
+        startTheServer(server);
+        resolve();
+    });
 });
