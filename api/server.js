@@ -1,47 +1,26 @@
 'use strict';
 
-const Hapi = require('hapi');
-const {Db, Server} = require('mongodb');
-const assert = require('assert');
+const HapiServer = require('./hapiServer');
+const connection = require('./server/connection');
+const start = require('./server/start');
+const pluginList = require('./server/pluginList');
+const co = require('co');
 
-const server = new Hapi.Server();
-server.connection({
-  host: 'localhost',
-  port: 8000
-});
+const server = HapiServer;
+server.connection(connection());
 
-server.route({
-  method: 'GET',
-  path: '/address/city',
-  handler: function(request, reply){
-    return reply()
-  }
-});
+module.exports = new Promise((resolve, reject) => {
+    co(function*(){
+        let plugins = yield pluginList();
+        let err = yield new Promise(resolve => 
+            server.register(plugins, resolve)
+        );
+        if (err) {
+            console.log('Failed to load plugins:', err);
+            reject(err);
+        }
 
-server.register({
-    register: require('ot-hapi-health'),
-    options: {
-    	isHealthy: cb => {
-        const db = new Db('addresses', new Server('localhost', 27017));
-        db.open(err => {
-          assert.equal(null, err);
-          console.log("Connected correctly to server");
-        
-          db.close();
-          cb(true);
-        });
-      }
-    }
-}, function(err) {
-    if (err) {
-        console.error('Failed to load plugin:', err);
-    }
-
-  server.start((err)=>{
-    if(err){
-      throw err;
-    }
-
-    console.log('Server running at', server.info.uri);
-  });
+        start(server);
+        resolve();
+    });
 });

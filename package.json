@@ -10,7 +10,7 @@
     "healthy": "wait-on http://localhost:8000/health -l -t 20000",
     "db-down": "node ./package-scripts/shutdown-db",
     "db-up": "node ./package-scripts/bootup-db",
-    "unit-tests": "jasmine JASMINE_CONFIG_PATH=./spec/jasmineConfig.json",
+    "unit-tests": "jest",
     "e2e-tests": "jasmine-node --verbose ."
   },
   "repository": {
@@ -24,15 +24,20 @@
   },
   "homepage": "https://github.com/trp956s/web-hapi#readme",
   "dependencies": {
+    "co": "^4.6.0",
+    "glob-promise": "^3.2.0",
     "hapi": "^16.5.2",
+    "hapi-route-hierarchy": "^1.0.0",
     "hapi-swagger": "^7.7.0",
     "ot-hapi-health": "^1.0.1"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
     "frisby": "^2.0.2",
+    "glob": "^7.1.2",
     "jasmine": "^2.7.0",
     "jasmine-node": "^1.14.5",
+    "jest": "^21.1.0",
     "mongodb": "^2.2.31",
     "shelljs": "^0.7.8",
     "wait-on": "^2.0.2"
