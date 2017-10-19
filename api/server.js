@@ -2,7 +2,7 @@
 
 const HapiServer = require('./hapiServer');
 const connection = require('./server/connection');
-const startTheServer = require('./server/onLoaded');
+const start = require('./server/start');
 const pluginList = require('./server/pluginList');
 const co = require('co');
 
@@ -20,7 +20,7 @@ module.exports = new Promise((resolve, reject) => {
             reject(err);
         }
 
-        startTheServer(server);
+        start(server);
         resolve();
     });
 });

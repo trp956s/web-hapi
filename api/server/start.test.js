@@ -1,6 +1,6 @@
-const onLoaded = require('./onLoaded');
+const onLoaded = require('./start');
 
-describe('onLoaded', ()=>{
+describe('start', ()=>{
     it('should start the server', ()=>{
         const startSpy = jasmine.createSpy('start');
         const serverFake = {start: startSpy};

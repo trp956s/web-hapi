@@ -1,21 +1,17 @@
 describe('server', ()=>{
-    beforeEach(()=>{
-        delete require.cache[require.resolve('./hapiServer')];
-        delete require.cache[require.resolve('./server')];
-    });
-
+    const resolveRegistration = (ignore,resolve)=>resolve();
     it('should set the connection', async ()=>{
         jest.resetModules();
         const connectionMock = jest.fn();
         const fakeServer= {
             connection:connectionMock,
-            register:(ignore,resolve)=>resolve()
+            register:resolveRegistration
         };
 
         jest.doMock('./hapiServer', ()=> fakeServer);
-        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve(fakePluginList));
+        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve());
         jest.doMock('./server/connection', ()=>()=>'foo');
-        jest.doMock('./server/onLoaded', ()=>()=>{});
+        jest.doMock('./server/start', ()=>()=>{});
 
         require('./server');
 
@@ -24,7 +20,7 @@ describe('server', ()=>{
 
     it('should send the plugins to get registered', async ()=>{
         jest.resetModules();
-        const registerSpy = jest.fn((ignore,callback)=>{callback()});
+        const registerSpy = jest.fn(resolveRegistration);
         jest.doMock('./hapiServer', ()=>{
             return {
                 connection : jest.fn(),
@@ -35,7 +31,7 @@ describe('server', ()=>{
         const fakePluginList = [{foo:'bar'}];
 
         jest.doMock('./server/pluginList', ()=>()=>Promise.resolve(fakePluginList));
-        jest.doMock('./server/onLoaded', ()=>()=>{});
+        jest.doMock('./server/start', ()=>()=>{});
 
         await require('./server');
 
@@ -57,7 +53,7 @@ describe('server', ()=>{
         });
         
         jest.doMock('./server/pluginList', ()=>()=>Promise.resolve([]));
-        jest.doMock('./server/onLoaded', ()=>()=>{});
+        jest.doMock('./server/start', ()=>()=>{});
         
         try {
             await require('./server');
@@ -84,7 +80,7 @@ describe('server', ()=>{
 
 
         jest.doMock('./server/pluginList', ()=>()=>Promise.resolve([]));
-        jest.doMock('./server/onLoaded', ()=>startTheServerSpy);
+        jest.doMock('./server/start', ()=>startTheServerSpy);
 
         await require('./server');
 
