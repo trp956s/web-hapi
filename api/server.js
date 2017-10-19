@@ -9,13 +9,10 @@ const co = require('co');
 const server = HapiServer();
 server.connection(connection());
 
-console.log('>>>>>>>>', module.exports);
-
 module.exports = new Promise((resolve, reject) => {
     co(function*(){
         let plugins = yield pluginList();
         let err = yield new Promise(resolve => 
-
             server.register(plugins, resolve)
         );
         if (err) {

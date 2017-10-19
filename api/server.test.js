@@ -4,24 +4,23 @@ describe('server', ()=>{
         delete require.cache[require.resolve('./server')];
     });
 
-    // it('should set the connection', async ()=>{
-    //     const connectionMock = jest.fn();
-    //     const fakeServer= {
-    //         connection:connectionMock,
-    //     };
-    //     const serverConstructorMock = jest.fn(()=>{
-    //         return fakeServer;
-    //     });
+    it('should set the connection', async ()=>{
+        jest.resetModules();
+        const connectionMock = jest.fn();
+        const fakeServer= {
+            connection:connectionMock,
+            register:(ignore,resolve)=>resolve()
+        };
 
-    //     require('hapi').Server = serverConstructorMock;
-    //     jest.doMock('co', ()=>()=>{});
-    //     jest.doMock('./server/connection', ()=>()=>'foo');
-    //     jest.doMock('./server/onLoaded', ()=>()=>{});
+        jest.doMock('./hapiServer', ()=>()=> fakeServer);
+        jest.doMock('./server/pluginList', ()=>()=>Promise.resolve(fakePluginList));
+        jest.doMock('./server/connection', ()=>()=>'foo');
+        jest.doMock('./server/onLoaded', ()=>()=>{});
 
-    //     require('./server');
+        require('./server');
 
-    //     expect(connectionMock).toHaveBeenCalledWith('foo');
-    // });
+        expect(connectionMock).toHaveBeenCalledWith('foo');
+    });
 
     it('should send the plugins to get registered', async ()=>{
         jest.resetModules();
